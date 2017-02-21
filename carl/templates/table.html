@@ -1,0 +1,29 @@
+
+<div id="{{table_id}}">
+<table class="pure-table pure-table-bordered">
+    <thead><tr>
+    {% for h in headers%}
+        <th>{{ h }}</th> 
+    {% endfor %}
+    </tr></thead>
+    <tbody>
+    {% for row in table%}
+        <tr>
+        {% for col in row %}
+            <td>
+            {% if headers[loop.index-1]  == "url" %}
+                <a href="{{ url_for('url_info', page_url=col[7:])}}">{{ col }}</a>
+            {% elif headers[loop.index-1]  == "time" %}
+                {{ '{0:0.0f}'.format(col) }}
+            {% elif headers[loop.index-1] in ["jac","pair_jac","chron_jac","chron_univ","size_univ"] %}
+                {{ '{0:0.2f}'.format(col) }}
+            {% else %}
+                {{col}}
+            {% endif %}
+            </td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>

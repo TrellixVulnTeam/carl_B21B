@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Page Info{% endblock %}
+{% block content %}
+<h1>Info for {{page}}</h1>
+    {% for info in all_info %}
+        {% with headers=info.1, table=info.2%}
+            <h2>{{ info.0}}</h2>
+            {% include "table.html" %}
+            <br>
+        {% endwith %}
+    {% endfor %}
+{% endblock %}
