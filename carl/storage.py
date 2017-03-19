@@ -172,7 +172,7 @@ def execute_many(query, items):
 
 
 # Data Queries used in comparing loads
-# URLs with at least one sucessfull page load
+# URLs with at least one successful page load
 GET_RUNS = "SELECT * from runs"
 GET_PAGES = "SELECT * from pages"
 GET_URLS = "SELECT url FROM pages GROUP BY url"

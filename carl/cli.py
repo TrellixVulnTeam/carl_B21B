@@ -16,88 +16,88 @@ from carl import web
 def parse_args():
     """Setup the command line options for running carl"""
     parser = argparse.ArgumentParser(
-            description="carl - The Headless HAR Crawler")
+        description="carl - The Headless HAR Crawler")
     subparsers = parser.add_subparsers(
-            dest="command",
-            title="commands")
+        dest="command",
+        title="commands")
 
     # sub parser for running a job
     parser_run = subparsers.add_parser(
-            "run",
-            help="run a job crawling URLs to capture a HAR")
+        "run",
+        help="run a job crawling URLs to capture a HAR")
     parser_run.add_argument(
-            "jobfile",
-            help="the job file to process")
+        "jobfile",
+        help="the job file to process")
 
     # sub parser for GETing a URL
     parser_get = subparsers.add_parser(
-            "get",
-            help="capture a HAR for a single URL")
+        "get",
+        help="capture a HAR for a single URL")
     parser_get.add_argument(
-            "-b", "--browser",
-            help="the web driver backend to use (default: phantomjs_bmp)",
-            default="phantomjs_bmp",
-            choices=common.CONFS.keys())
+        "-b", "--browser",
+        help="the web driver backend to use (default: phantomjs_bmp)",
+        default="phantomjs_bmp",
+        choices=common.CONFS.keys())
     parser_get.add_argument(
-            "-t", "--timeout",
-            help="timeout for the webdriver (default: 30s)",
-            type=int,
-            default=30)
+        "-t", "--timeout",
+        help="timeout for the webdriver (default: 30s)",
+        type=int,
+        default=30)
     parser_get.add_argument(
-            "-r", "--reloads",
-            help="number of times to request URL (default: 1)",
-            type=int,
-            default=1)
+        "-r", "--reloads",
+        help="number of times to request URL (default: 1)",
+        type=int,
+        default=1)
     parser_get.add_argument(
-            "-w", "--workers",
-            help="number of browser instances to use (default: 1)",
-            type=int,
-            default=1)
+        "-w", "--workers",
+        help="number of browser instances to use (default: 1)",
+        type=int,
+        default=1)
     parser_get.add_argument(
-            "-f", "--foreground",
-            help="run in foreground (only valid for non-headless browsers)",
-            action='store_true',
-            default=False)
+        "-f", "--foreground",
+        help="run in foreground (only valid for non-headless browsers)",
+        action='store_true',
+        default=False)
     parser_get.add_argument(
-            "url",
-            help="url to GET and capture a HAR for")
+        "url",
+        help="url to GET and capture a HAR for")
 
     #  sub parser for handling dependencies
     parser_depends = subparsers.add_parser(
-            "depends",
-            help="manage dependencies")
+        "depends",
+        help="manage dependencies")
     parser_depends.add_argument(
-            "action",
-            help="available dependency management actions",
-            choices=["list", "install", "gen_config"])
+        "action",
+        help="available dependency management actions",
+        choices=["list", "install", "gen_config"])
 
     # sub parser for analysis utilities
     parser_analysis = subparsers.add_parser(
-            "analysis",
-            help="analysis utilities")
+        "analysis",
+        help="analysis utilities")
     parser_analysis.add_argument(
-            "-v", "--verbose",
-            help="print out intermediate steps",
-            action='store_true',
-            default=False)
+        "-v", "--verbose",
+        help="print out intermediate steps",
+        action='store_true',
+        default=False)
     parser_analysis.add_argument(
-            "-f", "--filt",
-            help="filter out timeouts",
-            action='store_true',
-            default=False)
+        "-f", "--filt",
+        help="filter out timeouts",
+        action='store_true',
+        default=False)
     parser_analysis.add_argument(
-            "action",
-            help="available analysis actions",
-            choices=["make_db", "stats", "jac", "jac_chart", "good_url",
-                     "web"])
+        "action",
+        help="available analysis actions",
+        choices=["make_db", "stats", "jac", "jac_chart", "good_url",
+                 "web"])
 
     # sub parser for debugging
     parser_debug = subparsers.add_parser(
-            "debug",
-            help="get all the infomration for a url")
+        "debug",
+        help="get all the infomration for a url")
     parser_debug.add_argument(
-            "url",
-            help="the url to investigate")
+        "url",
+        help="the url to investigate")
 
     args = parser.parse_args()
     return args
@@ -128,7 +128,7 @@ def run_command(args):
             # allow convenience DEFAULT_ALEXA value to specify internal list
             if job['url_path'] == "DEFAULT_ALEXA":
                 job['url_path'] = depends.alexa_path()
-            urls = utils.load_urls(
+                urls = utils.load_urls(
                     job['url_path'], job['num_url'], job['url_method'])
 
             run = storage.Run(job)
@@ -177,7 +177,7 @@ def run_command(args):
         elif args.action == "jac_chart":
             jaccard.chart_jaccard(args.filt)
         elif args.action == "good_url":
-            analysis.save_sucessful_urls_by_config()
+            analysis.save_successful_urls_by_config()
         elif args.action == "web":
             web.start_web()
 
@@ -188,10 +188,10 @@ def run_command(args):
 def setup_logging():
     # log everything to a file
     logging.basicConfig(
-            level=logging.DEBUG,
-            format='%(asctime)s, %(name)s, %(levelname)s, %(message)s',
-            filename='carl.log',
-            filemode='a')
+        level=logging.DEBUG,
+        format='%(asctime)s, %(name)s, %(levelname)s, %(message)s',
+        filename='carl.log',
+        filemode='a')
 
     # log INFO and above to console (stderr), with a simplified format
     console = logging.StreamHandler()
@@ -217,3 +217,7 @@ def main():
     setup_logging()
     depends.add_deps_to_path()
     run_command(args)
+
+    
+if __name__ == '__main__':
+    main()

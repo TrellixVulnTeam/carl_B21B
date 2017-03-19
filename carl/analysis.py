@@ -233,7 +233,7 @@ def print_tabulated(data, headers=None):
     print("")
 
 
-def successful_url(browser_config):
+def keep_successful_url(browser_config):
     # collect necessary data
     runs = table_to_dict("run")
     pages = table_to_dict("page")
@@ -250,18 +250,18 @@ def successful_url(browser_config):
             else:
                 pages_by_url[url] = [page]
 
-    sucessful_url = []
+    successful_url = []
     # only keep those where all page_loads resulted in a successful HAR capture
     for url, page_list in pages_by_url.iteritems():
         timeout = sum_on_field(page_list, "har_status", "success")
         if timeout == len(page_list):
-            sucessful_url.append(url)
+            successful_url.append(url)
 
-    sorted_success = sorted(sucessful_url)
+    sorted_success = sorted(successful_url)
     return sorted_success
 
 
-def save_sucessful_urls_by_config():
+def save_successful_urls_by_config():
     runs = table_to_dict("run")
 
     run_configs = set()
@@ -270,7 +270,7 @@ def save_sucessful_urls_by_config():
         run_configs.add(run.get_config())
 
     for conf in run_configs:
-        success = successful_url(conf)
+        success = keep_successful_url(conf)
         logging.info("Saving good urls for config: {} : {}".format(
                      conf, len(success)))
         utils.save_csv(enumerate(success), "{}_valid.csv".format(conf))

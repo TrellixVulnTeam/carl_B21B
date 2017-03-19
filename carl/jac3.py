@@ -11,9 +11,9 @@ from carl import utils
 
 # Functions to get data from database
 def get_all_urls():
-    """Query page loads for any urls that have been sucessfully captured
+    """Query page loads for any urls that have been successfully captured
 
-    Return a list of tuples containing a url and the number of sucessful loads
+    Return a list of tuples containing a url and the number of successful loads
     """
     q = "SELECT url, count(url) FROM pages "\
         "WHERE har_status == 'success' GROUP BY url"
@@ -185,7 +185,7 @@ def univ_calc(univ):
 
 
 # Summarization functions
-def gen_load_list_cardnality(load_list):
+def gen_load_list_cardinality(load_list):
     loads = sort_load_list_by_time(load_list)
     headers = ["page", "dtg", "# priv"]
     table = []
@@ -325,7 +325,7 @@ def gen_url_summary(url):
     table = [summary[h] for h in calc]
     all_sum.append(("stats summary", calc, [table]))
 
-    t, h = gen_load_list_cardnality(load_list)
+    t, h = gen_load_list_cardinality(load_list)
     all_sum.append(("cardinality", h, t))
 
     t, h, key = load_list_to_value(load_list)
@@ -344,7 +344,7 @@ def print_url_summary(url):
     if not url.startswith("http"):
         url = "http://{}".format(url)
     load_list = get_url_load_set(url)
-    table, headers = gen_load_list_cardnality(load_list)
+    table, headers = gen_load_list_cardinality(load_list)
     analysis.print_tabulated(table, headers)
 
     summary = sumarize_load_list(load_list)

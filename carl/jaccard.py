@@ -47,7 +47,7 @@ def print_jaccard_by_url(verbose, filt):
         # print per url details
         if verbose:
             print("site: {} : loads: {}".format(url, len(page_set)))
-            print_page_set_cardnality(page_set)
+            print_page_set_cardinality(page_set)
             print_jaccard(jac, pair_jac)
             print("#"*40)
 
@@ -151,7 +151,7 @@ def calculate_jaccard_over_pages(page_sets):
     return jaccard
 
 
-def print_page_set_cardnality(page_sets):
+def print_page_set_cardinality(page_sets):
     views = common.VIEWS
     headers = ["page"]
 
@@ -252,7 +252,7 @@ def inspect_url(url):
         pages[item.data["page_id"]] = item
 
     view_sets = gen_view_sets(pages)
-    print_page_set_cardnality(view_sets)
+    print_page_set_cardinality(view_sets)
 
     jac = calculate_jaccard_over_pages(view_sets)
     print_jaccard(jac)
