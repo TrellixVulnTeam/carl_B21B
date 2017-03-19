@@ -11,7 +11,7 @@ setup(name='carl',
       license='MIT',
       packages=['carl'],
       setup_requires=[
-            'numpy==1.11.1'],
+            'numpy>=1.11.1'],
       install_requires=[
             'argparse==1.2.1',
             'browsermob-proxy==0.7.1',

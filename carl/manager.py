@@ -155,7 +155,7 @@ def execution_manager(run, urls):
         blocks = generate_blocks(run, urls)
         logging.debug("Starting Iteration: {}".format(i))
         logging.debug("With run configuration: {}".format(run.data))
-        # save run data up front over write if sucessful to save times
+        # save run data up front over write if successful to save times
         run.save_json("{}_rundata.json".format(run.data['run_id'][:8]))
         # Create gloablly shared resources
         pre_execution(run.data['browser'], run.data['foreground'])
