@@ -1,5 +1,9 @@
 from setuptools import setup
+import os
 
+datadir = os.path.join('carl','templates')
+datafiles = [(d, [os.path.join(d,f) for f in files])
+    for d, folders, files in os.walk(datadir)]
 
 setup(name='carl',
       version='0.1.4',
@@ -31,5 +35,7 @@ setup(name='carl',
       entry_points={
           'console_scripts': ['carl=carl.cli:main'],
       },
+      data_files = datafiles,
       include_package_data=True,
       zip_safe=False)
+
