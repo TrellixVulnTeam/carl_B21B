@@ -2,16 +2,39 @@ from datetime import datetime, timedelta
 from timeit import default_timer
 from adblockparser import AdblockRules
 from adblockparser import AdblockRule
+import os
 
 
 from carl import storage
 all_options = {opt: True for opt in AdblockRule.BINARY_OPTIONS}
 
 
-def load_rules():
-    fname = "easylist.txt"
-    with open(fname) as f:
-        raw_rules = f.readlines()
+def load_rules(block):
+    all_fname = []
+
+    if(block == None):
+        # If no arg, try default "easylist.txt"
+        all_fname.append("easylist.txt")
+    else:
+        block_name = block[0]
+
+        # If given name is a directory, load all block list files from that dir
+	# If given name is a file, load it as the sole block list file
+	# Otherwise, throw error
+        if(os.path.isdir(block_name)):
+            all_fname = [block_name + "/" + name for name in os.listdir(block_name)]
+        elif(os.path.isfile(block_name)):
+            all_fname.append(block_name)
+        else:
+            raise ValueError("Unable to use given blocklist(s).")
+
+    # Now instead of loading only rules from one file, concatenate rules from all
+    #   block lists we were given
+    raw_rules = []
+    for fname in all_fname:
+        with open(fname) as f:
+            raw_rules += f.readlines()
+            
     rules = AdblockRules(raw_rules, use_re2=True)
     return rules
 
@@ -47,8 +70,9 @@ def has_ads_column():
     return 'ad' in [description[0] for description in storage.execute(q).description]
 
 
-def mark_ads():
-    rules = load_rules()
+def mark_ads(block):
+    # Give block list name to load_rules
+    rules = load_rules(block)
 
     # If the table doesn't have an ad column, alter the table so it does.
     if(not has_ads_column()):

@@ -91,6 +91,10 @@ def parse_args():
         help="available analysis actions",
         choices=["make_db", "stats", "jac", "jac_chart", "good_url",
                  "web", "ads"])
+    parser_analysis.add_argument(
+        "-b", "--block",
+        help="block list file/directory of block lists for carl analysis ads",
+        nargs=1)
 
     # sub parser for debugging
     parser_debug = subparsers.add_parser(
@@ -122,7 +126,10 @@ def validate_job(job):
 
 
 def run_command(args):
-
+    if args.block != None and args.action != "ads":
+        logging.error("Gave blocklist, but not running analysis ads.")
+        exit()
+    
     if args.command == "run":
         job = utils.load_yaml(args.jobfile)
         if job and validate_job(job) and depends.check()[job['browser']]:
@@ -183,7 +190,7 @@ def run_command(args):
             web.start_web()
         elif args.action == "ads":
             # carl analysis ads: marks all requests that match with ad blocklists
-            ads.mark_ads()
+            ads.mark_ads(args.block)
 
     elif args.command == "debug":
         jaccard.inspect_url(args.url)
