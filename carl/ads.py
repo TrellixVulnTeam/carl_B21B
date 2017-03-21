@@ -34,9 +34,32 @@ def sec_to_time(sec):
     return "%d:%d:%d:%d" % (d.day-1, d.hour, d.minute, d.second)
 
 
+# make_ad_column(): Modifies the requests table so that it contains an ad column
+#    containing boolean values
+def make_ad_column():
+    q = "ALTER TABLE requests ADD ad boolean"
+    storage.execute(q)
+
+    
+# has_ads_column(): Determines whether the requests table has an ad column or not.
+def has_ads_column():
+    q = "SELECT * from requests"
+    return 'ad' in [description[0] for description in storage.execute(q).description]
+
+
 def mark_ads():
     rules = load_rules()
 
+    # If the table doesn't have an ad column, alter the table so it does.
+    if(not has_ads_column()):
+        make_ad_column()
+        
+        # We'll run into problems if the ad column still doesn't exist, so throw
+        #   an error here.
+        if(not has_ads_column()):
+            raise ValueError("requests table ad column still missing.")
+
+        
     reqs = get_req_urls()
     ads = []
     not_ads = []

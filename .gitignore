@@ -1,0 +1,5 @@
+carl.egg-info/*
+*#*
+*.pyc
+data/*
+*~
