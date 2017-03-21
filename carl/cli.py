@@ -11,6 +11,7 @@ from carl import manager
 from carl import utils
 from carl import storage
 from carl import web
+from carl import ads
 
 
 def parse_args():
@@ -89,12 +90,12 @@ def parse_args():
         "action",
         help="available analysis actions",
         choices=["make_db", "stats", "jac", "jac_chart", "good_url",
-                 "web"])
+                 "web", "ads"])
 
     # sub parser for debugging
     parser_debug = subparsers.add_parser(
         "debug",
-        help="get all the infomration for a url")
+        help="get all the information for a url")
     parser_debug.add_argument(
         "url",
         help="the url to investigate")
@@ -180,6 +181,9 @@ def run_command(args):
             analysis.save_successful_urls_by_config()
         elif args.action == "web":
             web.start_web()
+        elif args.action == "ads":
+            # carl analysis ads: marks all requests that match with ad blocklists
+            ads.mark_ads()
 
     elif args.command == "debug":
         jaccard.inspect_url(args.url)
