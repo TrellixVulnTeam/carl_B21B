@@ -126,10 +126,6 @@ def validate_job(job):
 
 
 def run_command(args):
-    if args.block != None and args.action != "ads":
-        logging.error("Gave blocklist, but not running analysis ads.")
-        exit()
-    
     if args.command == "run":
         job = utils.load_yaml(args.jobfile)
         if job and validate_job(job) and depends.check()[job['browser']]:
