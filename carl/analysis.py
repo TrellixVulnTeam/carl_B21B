@@ -51,7 +51,10 @@ def _parse_har(h_name):
             try:
                 domain = urlparse.urlunparse(
                         (url.scheme, url.netloc, "", "", "", ""))
-                parse_tld = tld.get_tld(domain)
+                try:
+                    parse_tld = tld.get_tld(domain)
+                except tld.exceptions.TldBadUrl:
+                    break
                 priv = psl.privatesuffix(url.netloc)
             # occurs on instances like IP addresses
             except tld.exceptions.TldDomainNotFound:
