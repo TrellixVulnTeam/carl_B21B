@@ -132,8 +132,8 @@ def run_command(args):
             # allow convenience DEFAULT_ALEXA value to specify internal list
             if job['url_path'] == "DEFAULT_ALEXA":
                 job['url_path'] = depends.alexa_path()
-                urls = utils.load_urls(
-                    job['url_path'], job['num_url'], job['url_method'])
+            urls = utils.load_urls(
+                job['url_path'], job['num_url'], job['url_method'])
 
             run = storage.Run(job)
             manager.execution_manager(run, urls)
